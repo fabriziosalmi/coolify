@@ -1,0 +1,28 @@
+# documentation: https://github.com/fabriziosalmi/certmate
+# slogan: CertMate issues and renews SSL/TLS certificates with a web UI and a REST API: DNS-01 through many DNS providers, several CAs, automatic renewal.
+# category: security
+# tags: ssl, tls, certificates, acme, letsencrypt, dns, automation, pki
+# logo: svgs/certmate.png
+# port: 8000
+
+services:
+  certmate:
+    image: fabriziosalmi/certmate:2.44.0
+    environment:
+      - SERVICE_URL_CERTMATE_8000
+      - API_BEARER_TOKEN=${SERVICE_PASSWORD_64_APITOKEN}
+      - SECRET_KEY=${SERVICE_PASSWORD_64_SECRETKEY}
+      - CERTMATE_BACKUP_PASSPHRASE=${SERVICE_PASSWORD_64_BACKUP}
+      - BEHIND_PROXY=true
+      - FLASK_ENV=production
+    volumes:
+      - certmate-certificates:/app/certificates
+      - certmate-data:/app/data
+      - certmate-logs:/app/logs
+      - certmate-backups:/app/backups
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8000/health"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
