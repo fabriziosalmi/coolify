@@ -7,7 +7,7 @@
 
 services:
   certmate:
-    image: fabriziosalmi/certmate:2.44.0
+    image: fabriziosalmi/certmate:2.50.1
     environment:
       - SERVICE_URL_CERTMATE_8000
       - API_BEARER_TOKEN=${SERVICE_PASSWORD_64_APITOKEN}
